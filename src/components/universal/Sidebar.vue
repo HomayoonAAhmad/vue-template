@@ -1,11 +1,11 @@
-<script setup>
+<script setup lang="ts">
 import { useRoute } from "vue-router"
 import { menus } from "../../constants/menu"
-import SidebarCard from "./SidebarCard.vue"
+import SidebarCard from "../cards/SidebarCard.vue"
 
 const route = useRoute()
 
-const isActive = (url) => route.path === url
+const isActive = (url: string) => route.path === url
 </script>
 
 <template>
