@@ -1,3 +1,9 @@
+<script setup lang="ts">
+import UserDataProvider from "./providers/UserDataProvider.vue"
+</script>
+
 <template>
-  <router-view></router-view>
+  <user-data-provider>
+    <router-view></router-view>
+  </user-data-provider>
 </template>

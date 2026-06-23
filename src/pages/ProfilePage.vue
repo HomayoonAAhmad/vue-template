@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { reactive } from "vue"
 import Tab from "../components/UI/Tab.vue"
+import AssetsSection from "../components/universal/AssetsSection.vue"
+import InfoSection from "../components/universal/InfoSection.vue"
 
 const FILTER_TABS = [
-  { id: "INFO", name: "اطلاعات کاربری" },
   { id: "ASSETS", name: "دارایی ها" },
+  { id: "INFO", name: "اطلاعات کاربری" },
 ]
 
 interface State {
@@ -16,8 +18,8 @@ const state = reactive<State>({
 })
 
 const componentMap = {
-  INFO: "",
-  ASSETS: "SellGoldSection",
+  ASSETS: AssetsSection,
+  INFO: InfoSection,
 }
 </script>
 
@@ -32,9 +34,28 @@ const componentMap = {
     <div className="flex flex-col w-full h-full gap-5.25">
       <Tab v-model="state.activeTab" :options="FILTER_TABS" />
 
-      <keep-alive>
-        <component :is="componentMap[state.activeTab]" />
-      </keep-alive>
+      <Transition name="fade-slide" mode="out-in">
+        <keep-alive>
+          <component :is="componentMap[state.activeTab]" />
+        </keep-alive>
+      </Transition>
     </div>
   </div>
 </template>
+
+<style scoped>
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: all 0.25s ease;
+}
+
+.fade-slide-enter-from {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+</style>

@@ -1,7 +1,7 @@
 import {
   HomeIcon,
   PhoneIcon,
-  RectangleGroupIcon,
+  ReceiptPercentIcon,
   UserCircleIcon,
 } from "@heroicons/vue/24/outline"
 
@@ -21,7 +21,7 @@ export const menus = [
   {
     id: 3,
     text: "تراکنش ها",
-    icon: RectangleGroupIcon,
+    icon: ReceiptPercentIcon,
     url: "/transactions",
   },
   {
