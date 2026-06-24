@@ -20,9 +20,10 @@ const router = createRouter({
         { path: "transactions", component: TransactionsPage },
         { path: "/wallet/charge", component: ChargeWalletPage },
         { path: "/wallet/withdraw", component: WithdrawPage },
+        { path: "/me", component: PortfolioPage },
       ],
     },
-    { path: "/me", component: PortfolioPage },
+    // { path: "/me", component: PortfolioPage },
     { path: "/:pathMatch(.*)*", component: NotFound },
   ],
 })
