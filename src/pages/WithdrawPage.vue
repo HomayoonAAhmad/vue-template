@@ -7,7 +7,7 @@ import Button from "../components/UI/Button.vue"
 import Modal from "../components/UI/Modal.vue"
 import { userStore } from "../store/userStore"
 import Selectbox from "../components/UI/Selectbox.vue"
-import { banks } from "../constants/banks.ts"
+import { banks } from "../constants/banks"
 
 const options = [1000000, 2000000, 3000000]
 

@@ -39,7 +39,7 @@ watch(
 </script>
 
 <template>
-  <div className="h-full flex flex-col gap-5">
+  <div class="h-full flex flex-col gap-5">
     <Input id="name" v-model="state.name" name="name" label="نام شما" />
 
     <Input

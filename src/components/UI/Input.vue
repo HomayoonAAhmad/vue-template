@@ -79,7 +79,7 @@ const handleInput = (event: Event) => {
       :maxlength="maxLength"
       :minlength="minLength"
       :autocomplete="autoComplete"
-      class="w-full border h-11.75 md:h-13 text-xs md:text-sm placeholder:text-right px-3 rounded-lg outline-none transition-all duration-300 border-primary"
+      class="w-full border h-11.75 md:h-13 text-xs md:text-sm placeholder:text-right px-3 rounded-lg outline-none transition-all duration-300 border-fifth shadow-sm focus:border-primary"
       :class="{
         'bg-gray-100 cursor-not-allowed opacity-60': disabled,
         'border-danger': false,

@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import axios from "axios"
 import { onMounted, ref } from "vue"
+import { goldStore } from "../../store/goldStore"
 
-const loading = ref(false)
-const amount = ref(0)
+const loading = ref<boolean>(false)
+const amount = ref<number>(0)
+
+const gold = goldStore()
 
 const getPrice = () => {
-  //   const url = "https://api.digikala.com/non-inventory/v1/prices/"
   const url = "/api/non-inventory/v1/prices/"
 
   loading.value = true
@@ -15,6 +17,7 @@ const getPrice = () => {
     .get(url)
     .then((response) => {
       amount.value = response.data?.gold18?.price || 0
+      gold.setGoldPrice(response.data?.gold18?.price || 0)
     })
     .catch((err) => {
       console.log(err)

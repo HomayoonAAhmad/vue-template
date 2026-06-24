@@ -8,8 +8,8 @@ import BuyGoldSection from "../components/universal/BuyGoldSection.vue"
 import SellGoldSection from "../components/universal/SellGoldSection.vue"
 
 const options = [
-  { id: "SELL", name: "فروش" },
   { id: "BUY", name: "خرید" },
+  { id: "SELL", name: "فروش" },
 ]
 
 interface State {
@@ -26,7 +26,7 @@ const state = reactive<State>({
   min_price: 0,
   change_percentage: "",
 
-  selectedValue: "SELL",
+  selectedValue: "BUY",
 })
 
 const actions = {
@@ -76,7 +76,7 @@ const componentMap = {
 
 <template>
   <div
-    class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-13.25 max-h-[calc(100dvh-230px)] overflow-scroll scrollbar-hide"
+    class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-13.25 max-h-[calc(100dvh-230px)] overflow-scroll scrollbar-hidden"
   >
     <div class="flex flex-col w-full items-center gap-4">
       <span class="w-full text-xs md:text-sm font-medium">
@@ -108,15 +108,18 @@ const componentMap = {
       </div>
     </div>
 
-    <div className="flex flex-col gap-4 p-1">
+    <div class="flex flex-col gap-4 p-1">
       <span class="w-full text-xs md:text-sm font-medium">
         خرید و فروش طلا
       </span>
 
-      <Tab v-model="state.selectedValue" :options="options" />
+      <Tab v-model="state.selectedValue" :options="options" class="mb-3" />
 
       <keep-alive>
-        <component :is="componentMap[state.selectedValue]" />
+        <component
+          :is="componentMap[state.selectedValue]"
+          @edit="state.selectedValue = 'BUY'"
+        />
       </keep-alive>
     </div>
   </div>
