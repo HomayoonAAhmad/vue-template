@@ -2,7 +2,6 @@
 import axios from "axios"
 import { onMounted, reactive } from "vue"
 import Chart from "../components/UI/Chart.vue"
-import moment from "moment-jalaali"
 import Tab from "../components/UI/Tab.vue"
 import BuyGoldSection from "../components/universal/BuyGoldSection.vue"
 import SellGoldSection from "../components/universal/SellGoldSection.vue"
@@ -39,21 +38,34 @@ const actions = {
 }
 
 const getChartData = () => {
-  const url = "/api/non-inventory/v1/prices/chart/daily/?asset_type=gold18"
+  // const url = "/api/non-inventory/v1/prices/chart/daily/?asset_type=gold18"
+  // const url = "https://api.digikala.com/non-inventory/v1/prices/chart/daily/?asset_type=gold18"
+  const url =
+    "https://Api.BrsApi.ir/Market/Gold_Currency_Pro.php?key=BrgLrCK9YblUi3iJe7sYqeRJVu7Zgs7v&&history=1&symbol=IR_GOLD_18K"
   axios
     .get(url)
     .then((response) => {
-      const res = response.data
+      const res = response.data.history_24h
+      const now = res[0].time_unix
+      const twelveHoursAgo = now - 12 * 60 * 60
+      const last12Hours = res.filter(
+        (item: any) => item.time_unix >= twelveHoursAgo,
+      )
+      const filteredRes = last12Hours
+        .filter((_: any, index: number) => index % 30 === 0)
+        .reverse()
+
+      const prices = filteredRes.map((item: any) => item.price)
+      const maxPrice = Math.max(...prices)
+      const minPrice = Math.min(...prices)
       const data: Omit<State, "selectedValue"> = {
-        chartData: res.buckets.map(
-          (item: { date_time: string; price: number }) => ({
-            x: moment(item.date_time).format("HH:mm"),
-            y: item.price,
-          }),
-        ),
-        max_price: res.max_price,
-        min_price: res.min_price,
-        change_percentage: res.change_percentage,
+        chartData: filteredRes.map((item: { time: string; price: number }) => ({
+          x: item.time,
+          y: Math.floor(item.price / 1000),
+        })),
+        max_price: Math.floor(maxPrice / 1000),
+        min_price: Math.floor(minPrice / 1000),
+        change_percentage: "0",
       }
 
       actions.setData(data)

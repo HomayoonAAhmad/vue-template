@@ -207,6 +207,8 @@ const skills = [
         <img
           src="/images/me_bw.jpg"
           alt="Homayoun"
+          loading="lazy"
+          decoding="async"
           class="relative z-10 h-full w-full rounded-full object-cover object-top shadow-2xl ring-8 ring-white transition duration-700 hover:scale-105"
         />
       </div>

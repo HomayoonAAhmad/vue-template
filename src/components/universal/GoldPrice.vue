@@ -9,15 +9,20 @@ const amount = ref<number>(0)
 const gold = goldStore()
 
 const getPrice = () => {
-  const url = "/api/non-inventory/v1/prices/"
+  const url =
+    "https://Api.BrsApi.ir/Market/Gold_Currency.php?key=BrgLrCK9YblUi3iJe7sYqeRJVu7Zgs7v"
+  // const url = "https://api.digikala.com/non-inventory/v1/prices/"
+  // const url = "/api/non-inventory/v1/prices/"
 
   loading.value = true
   axios
   axios
     .get(url)
     .then((response) => {
-      amount.value = response.data?.gold18?.price || 0
-      gold.setGoldPrice(response.data?.gold18?.price || 0)
+      const data = response.data?.gold?.[0]?.price
+      const price = Math.floor(Number(data) / 1000)
+      amount.value = price || 0
+      gold.setGoldPrice(price || 0)
     })
     .catch((err) => {
       console.log(err)
