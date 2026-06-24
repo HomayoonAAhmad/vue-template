@@ -52,7 +52,7 @@ const state = reactive<State>({
         <span
           class="text-primary font-extrabold text-[19px] text-nowrap md:text-[30px]"
         >
-          به <span class="text-secondary">اپلیکیشن </span>
+          به <span class="text-secondary">گودو </span>
           خوش آمدید!
         </span>
 

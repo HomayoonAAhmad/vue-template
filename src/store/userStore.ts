@@ -5,6 +5,7 @@ const authData = JSON.parse(localStorage.getItem("data") || "null")
 interface UserData {
   name: string
   shaba: string
+  bank: string
   national: string
   phone: string
 }
@@ -13,6 +14,7 @@ export const userStore = defineStore("user", {
   state: (): UserData => ({
     name: authData?.name || "",
     shaba: authData?.shaba || "",
+    bank: authData?.bank || "",
     national: authData?.national || "",
     phone: authData?.phone || "",
   }),

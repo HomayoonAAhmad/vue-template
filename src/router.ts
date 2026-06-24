@@ -3,6 +3,8 @@ import MainLayout from "./components/layouts/MainLayout.vue"
 import DashboardPage from "./pages/DashboardPage.vue"
 import ProfilePage from "./pages/ProfilePage.vue"
 import TransactionsPage from "./pages/TransactionsPage.vue"
+import ChargeWalletPage from "./pages/ChargeWalletPage.vue"
+import WithdrawPage from "./pages/WithdrawPage.vue"
 
 const router = createRouter({
   history: createWebHistory(),
@@ -14,6 +16,8 @@ const router = createRouter({
         { path: "", component: DashboardPage },
         { path: "profile", component: ProfilePage },
         { path: "transactions", component: TransactionsPage },
+        { path: "/wallet/charge", component: ChargeWalletPage },
+        { path: "/wallet/withdraw", component: WithdrawPage },
       ],
     },
   ],

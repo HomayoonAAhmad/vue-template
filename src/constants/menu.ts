@@ -1,6 +1,6 @@
 import {
+  CodeBracketIcon,
   HomeIcon,
-  PhoneIcon,
   ReceiptPercentIcon,
   UserCircleIcon,
 } from "@heroicons/vue/24/outline"
@@ -26,8 +26,8 @@ export const menus = [
   },
   {
     id: 4,
-    text: "پشتیبانی",
-    icon: PhoneIcon,
-    url: "#",
+    text: "درباره من",
+    icon: CodeBracketIcon,
+    url: "/me",
   },
 ]

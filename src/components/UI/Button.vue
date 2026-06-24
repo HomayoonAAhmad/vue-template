@@ -30,7 +30,7 @@ const handleClick = (event: MouseEvent) => {
   <button
     :disabled="disabled || loading"
     :class="{ 'opacity-50 cursor-not-allowed!': disabled }"
-    class="transition-all duration-300 min-h-11 w-full cursor-pointer rounded-[9px] bg-primary text-white text-sm flex items-center justify-center gap-2"
+    class="transition-all active:scale-95 duration-300 min-h-11 w-full cursor-pointer rounded-[9px] bg-primary text-white text-sm flex items-center justify-center gap-2"
     @click="handleClick"
   >
     <ArrowPathIcon
