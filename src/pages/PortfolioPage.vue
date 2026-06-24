@@ -141,12 +141,12 @@ const skills = [
         <h2 class="text-xl font-bold">راه‌های ارتباطی</h2>
 
         <div class="flex gap-4">
-          <router-link
+          <a
             to="tel:09396420039"
             class="rounded-xl border border-zinc-200 p-3 transition-all duration-300 hover:-translate-y-1 hover:border-primary hover:text-primary hover:shadow-lg"
           >
             <PhoneIcon class="size-6" />
-          </router-link>
+          </a>
 
           <a
             href="https://t.me/fackoffdude"

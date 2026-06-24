@@ -36,7 +36,7 @@ const emit = defineEmits<{
       @click="emit('edit')"
       class="aspect-square flex items-center justify-center p-1 active:scale-90 transition-all duration-300 size-6.75 absolute top-2 right-2 bg-white rounded-md"
     >
-      <PencilSquareIcon />
+      <PencilSquareIcon class="w-full h-full" />
     </button>
   </div>
 </template>

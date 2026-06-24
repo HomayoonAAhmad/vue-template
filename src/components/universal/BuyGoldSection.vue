@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, watch } from "vue"
+import { reactive, ref, watch } from "vue"
 import Input from "../UI/Input.vue"
 import Button from "../UI/Button.vue"
 import { WalletIcon } from "@heroicons/vue/24/outline"
@@ -9,7 +9,8 @@ import { storeToRefs } from "pinia"
 
 const gold = goldStore()
 const { goldPrice } = storeToRefs(gold)
-console.log(goldPrice.value)
+
+const focusedInput = ref<"amount" | "milligram" | null>(null)
 
 const walletAmount = 0
 
@@ -45,12 +46,13 @@ const toNumber = (value: string) => {
 watch(
   () => state.amount,
   (newAmount) => {
+    if (focusedInput.value !== "amount") return
     if (syncing.from === "milligram") return
 
     const price = Number(goldPrice.value)
     const amount = toNumber(newAmount)
 
-    if (!newAmount || !price) {
+    if (!newAmount || newAmount === "0" || !price) {
       syncing.from = "amount"
       state.milligram = ""
       syncing.from = null
@@ -66,6 +68,7 @@ watch(
 watch(
   () => state.milligram,
   (newMilligram) => {
+    if (focusedInput.value !== "milligram") return
     if (syncing.from === "amount") return
 
     const price = Number(goldPrice.value)
@@ -94,6 +97,7 @@ watch(
       label="مبلغ پرداختی"
       type="number"
       separate
+      @focus="focusedInput = 'amount'"
     />
 
     <Input
@@ -103,6 +107,7 @@ watch(
       label="وزن طلا (میلی گرم)"
       type="number"
       separate
+      @focus="focusedInput = 'milligram'"
     />
 
     <div

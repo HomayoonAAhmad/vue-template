@@ -26,6 +26,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{
   "update:modelValue": [value: string]
+  focus: []
 }>()
 
 const formatNumber = (value: string) => {
@@ -85,6 +86,7 @@ const handleInput = (event: Event) => {
         'border-danger': false,
       }"
       @input="handleInput"
+      @focus="emit('focus')"
     />
   </div>
 </template>

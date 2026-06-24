@@ -93,18 +93,18 @@ const bankOptions = banks.map((bank: { fa_name: string }) => ({
             :disabled="!state.bank || !state.shaba"
             @click="
               () => {
+                state.openModal = false
                 user.setUserData({
                   ...user,
                   bank: state.bank,
                   shaba: state.shaba,
                 })
-                state.openModal = false
               }
             "
           />
         </div>
       </Modal>
-      {{ console.log(user) }}
+      <!-- {{ console.log(user) }} -->
       <Button
         text="شارژ"
         @click="() => (state.confirmModal = true)"
