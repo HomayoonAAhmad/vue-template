@@ -5,8 +5,11 @@ import Button from "../UI/Button.vue"
 import { WalletIcon } from "@heroicons/vue/24/outline"
 import Modal from "../UI/Modal.vue"
 import { goldStore } from "../../store/goldStore"
+import { storeToRefs } from "pinia"
 
-const { goldPrice } = goldStore()
+const gold = goldStore()
+const { goldPrice } = storeToRefs(gold)
+console.log(goldPrice.value)
 
 const walletAmount = 0
 
@@ -44,7 +47,7 @@ watch(
   (newAmount) => {
     if (syncing.from === "milligram") return
 
-    const price = Number(goldPrice)
+    const price = Number(goldPrice.value)
     const amount = toNumber(newAmount)
 
     if (!newAmount || !price) {
@@ -65,7 +68,7 @@ watch(
   (newMilligram) => {
     if (syncing.from === "amount") return
 
-    const price = Number(goldPrice)
+    const price = Number(goldPrice.value)
     const milligram = toNumber(newMilligram)
 
     if (!newMilligram || !price) {
