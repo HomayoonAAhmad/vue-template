@@ -18,6 +18,15 @@ const skills = [
   "MySQL",
   "TailwindCSS",
 ]
+
+import resumePdf from "../../public/Homayoon_Al_Ahmad_Resume.pdf"
+
+const downloadResume = () => {
+  const link = document.createElement("a")
+  link.href = resumePdf
+  link.download = "Homayoun_Ahmadi_Resume.pdf"
+  link.click()
+}
 </script>
 
 <template>
@@ -142,7 +151,7 @@ const skills = [
 
         <div class="flex gap-4">
           <a
-            to="tel:09396420039"
+            href="tel:09396420039"
             class="rounded-xl border border-zinc-200 p-3 transition-all duration-300 hover:-translate-y-1 hover:border-primary hover:text-primary hover:shadow-lg"
           >
             <PhoneIcon class="size-6" />
@@ -186,7 +195,8 @@ const skills = [
           </a>
 
           <button
-            class="flex items-center gap-2 rounded-xl bg-primary px-6 py-3 font-medium text-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+            @click="downloadResume"
+            class="flex items-center cursor-pointer gap-2 rounded-xl bg-primary px-6 py-3 font-medium text-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
           >
             <ArrowDownTrayIcon class="size-5" />
             دانلود رزومه
