@@ -1,39 +1,38 @@
 <script setup lang="ts">
-import axios from "axios"
-import { onMounted, ref } from "vue"
+import { useQuery } from "@tanstack/vue-query"
+import { ref } from "vue"
+import { endpoints } from "../../constants/endpoints"
+import { apiClient } from "../../services/apiClient"
 import { goldStore } from "../../store/goldStore"
 
-const loading = ref<boolean>(false)
 const amount = ref<number>(0)
 
 const gold = goldStore()
 
-const getPrice = () => {
-  const url =
-    "https://Api.BrsApi.ir/Market/Gold_Currency.php?key=BrgLrCK9YblUi3iJe7sYqeRJVu7Zgs7v"
+const getGoldPrice = async () => {
+  const url = endpoints.GOLD.GET.GOLD_PRICE
+  // "https://Api.BrsApi.ir/Market/Gold_Currency.php?key=BrgLrCK9YblUi3iJe7sYqeRJVu7Zgs7v"
   // const url = "https://api.digikala.com/non-inventory/v1/prices/"
   // const url = "/api/non-inventory/v1/prices/"
 
-  loading.value = true
-  axios
-  axios
+  return apiClient
     .get(url)
     .then((response) => {
-      const data = response.data?.gold?.[0]?.price
-      const price = Math.floor(Number(data) / 1000)
+      // const data = response.data?.gold?.[0]?.price
+      // const price = Math.floor(Number(data) / 1000)
+      const price = response.data.price
       amount.value = price || 0
       gold.setGoldPrice(price || 0)
     })
     .catch((err) => {
       console.log(err)
     })
-    .finally(() => {
-      loading.value = false
-    })
 }
 
-onMounted(() => {
-  getPrice()
+const { isPending } = useQuery({
+  queryKey: ["get-gold-price"],
+  queryFn: getGoldPrice,
+  // refetchInterval: 60000,
 })
 </script>
 
@@ -58,7 +57,7 @@ onMounted(() => {
 
     <div class="flex items-center gap-2">
       <div class="text-xs md:text-[16px] font-bold text-primary">
-        <span v-if="loading">-</span>
+        <span v-if="isPending">-</span>
         <span v-else>
           {{ amount.toLocaleString() }}
         </span>
