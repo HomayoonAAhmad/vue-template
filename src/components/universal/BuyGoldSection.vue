@@ -3,34 +3,51 @@ import { reactive, ref, watch } from "vue"
 import Input from "../UI/Input.vue"
 import Button from "../UI/Button.vue"
 import { WalletIcon } from "@heroicons/vue/24/outline"
-import Modal from "../UI/Modal.vue"
 import { goldStore } from "../../store/goldStore"
 import { storeToRefs } from "pinia"
+import { userStore } from "../../store/userStore.ts"
+import Radio from "../UI/Radio.vue"
+import { apiClient } from "../../services/apiClient.ts"
+import { endpoints } from "../../constants/endpoints.ts"
+import { useMutation } from "@tanstack/vue-query"
+import toast from "vue3-hot-toast"
+import { useRouter } from "vue-router"
+
+const router = useRouter()
 
 const gold = goldStore()
+const user = userStore()
 const { goldPrice } = storeToRefs(gold)
 
 const focusedInput = ref<"amount" | "milligram" | null>(null)
 
-const walletAmount = 0
+const walletAmount = user.wallet_amount
+
+const radioOptions = [
+  {
+    value: "wallet",
+    title: "پرداخت از کیف پول",
+    description: `موجودی کیف پول: ${walletAmount.toLocaleString()} تومان`,
+    disabled: user.wallet_amount === 0,
+  },
+  {
+    value: "gateway",
+    title: "پرداخت از طریق درگاه بانکی",
+  },
+]
 
 interface State {
   milligram: string
   amount: string
-  payment_type: "WALLET" | "CASH"
+  payment_type: "wallet" | "gateway"
   unit: "milligram" | "gram"
-  openModal: boolean
-  loading: boolean
 }
 
 const state = reactive<State>({
   milligram: "",
   amount: "",
-  payment_type: "CASH",
+  payment_type: "gateway",
   unit: "milligram",
-
-  openModal: false,
-  loading: false,
 })
 
 const syncing = reactive<{
@@ -86,6 +103,38 @@ watch(
     syncing.from = null
   },
 )
+
+const buyGold = (data: {
+  payment_type: State["payment_type"]
+  amount: State["amount"]
+}) => {
+  const body = {
+    payment_type: data.payment_type,
+    amount: data.amount,
+  }
+  const url = endpoints.TRANSACTIONS.POST.BUY_GOLD
+  return apiClient.post(url, body)
+}
+
+const buyGoldMutation = useMutation({
+  mutationFn: buyGold,
+  onSuccess: (response, variables) => {
+    if (variables.payment_type === "gateway") {
+      toast.loading(
+        "در حال انتقال به درگاه هستید، نیاز به انجام کاری از سمت شما نیست",
+      )
+      window.location.href = response.data.gateway_url
+    }
+    if (variables.payment_type === "wallet") {
+      router.push(`/pay-check?id=${response.data.transaction.id}`)
+      toast.success(response.data.message)
+    }
+  },
+  onError: (error, variables) => {
+    console.log("خطا:", error)
+    toast.error(error.message)
+  },
+})
 </script>
 
 <template>
@@ -110,52 +159,31 @@ watch(
       @focus="focusedInput = 'milligram'"
     />
 
-    <div
-      class="p-4.5 border shadow-sm border-fifth rounded-xl pb-5 flex flex-col gap-5"
-    >
-      <div class="flex items-center gap-2 mb-3">
-        <WalletIcon class="size-5 md:size-5" />
-        <span class="text-xs md:text-sm font-bold">روش پرداخت</span>
-      </div>
-
-      <div class="flex items-center cursor-not-allowed opacity-50 gap-2">
-        <span
-          class="aspect-square border-2 rounded-full border-gray-200 size-5"
-        ></span>
-        <div class="flex flex-col gap-1">
-          <span class="text-xs md:text-sm font-semibold">
-            پرداخت از کیف پول
-          </span>
-          <span class="text-[10px] text-[#828282] font-light">
-            موجودی کیف پول: {{ walletAmount.toLocaleString() }} ریال
-          </span>
+    <Radio v-model="state.payment_type" :options="radioOptions">
+      <template #title>
+        <div class="flex items-center gap-2 mb-3">
+          <WalletIcon class="size-5 md:size-5" />
+          <span class="text-xs md:text-sm font-bold">روش پرداخت</span>
         </div>
-      </div>
-
-      <div class="h-px w-full bg-gray-200" />
-
-      <div class="flex items-center gap-2">
-        <span
-          class="aspect-square border-2 flex items-center p-0.75 rounded-full border-primary size-5"
-        >
-          <span class="rounded-full w-full h-full bg-primary"></span>
-        </span>
-        <div class="flex w-full items-center justify-between">
-          <span class="text-xs md:text-sm font-semibold">
-            پرداخت از طریق درگاه بانکی
-          </span>
-        </div>
-      </div>
-    </div>
+      </template>
+    </Radio>
 
     <Button
       text="خرید"
       class="w-full mt-4"
-      :disabled="!state.milligram || state.loading"
-      @click="() => (state.openModal = true)"
+      :loading="buyGoldMutation.isPending.value"
+      :disabled="!state.amount"
+      @click="
+        () => {
+          buyGoldMutation.mutate({
+            payment_type: state.payment_type,
+            amount: state.amount,
+          })
+        }
+      "
     />
 
-    <Modal v-model:open="state.openModal">
+    <!-- <Modal v-model:open="state.openModal">
       <div class="text-center flex flex-col gap-4">
         <h3 class="font-bold text-lg">ممنون از همراهی شما 🌱</h3>
 
@@ -178,6 +206,6 @@ watch(
           امیدوارم در نسخه‌های بعدی تجربه بهتری برای شما فراهم کنم. ❤️
         </p>
       </div>
-    </Modal>
+    </Modal> -->
   </div>
 </template>

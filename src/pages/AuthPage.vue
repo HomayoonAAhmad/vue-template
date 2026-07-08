@@ -62,9 +62,6 @@ const verifyOtpMutation = useMutation({
     toast.success("با موفقیت انجام شد")
     console.log("موفقیت آمیز:", response.data)
     user.setUserData({
-      id: response.data.user.id,
-      name: response.data.user.name,
-      phone: response.data.user.phone,
       token: response.data.token,
     })
   },

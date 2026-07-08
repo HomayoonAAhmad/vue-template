@@ -15,7 +15,7 @@ const getGoldPrice = async () => {
   // const url = "https://api.digikala.com/non-inventory/v1/prices/"
   // const url = "/api/non-inventory/v1/prices/"
 
-  return apiClient
+  apiClient
     .get(url)
     .then((response) => {
       // const data = response.data?.gold?.[0]?.price
@@ -23,6 +23,7 @@ const getGoldPrice = async () => {
       const price = response.data.price
       amount.value = price || 0
       gold.setGoldPrice(price || 0)
+      return price
     })
     .catch((err) => {
       console.log(err)
@@ -32,6 +33,8 @@ const getGoldPrice = async () => {
 const { isPending } = useQuery({
   queryKey: ["get-gold-price"],
   queryFn: getGoldPrice,
+  refetchOnWindowFocus: false,
+  refetchOnMount: false,
   // refetchInterval: 60000,
 })
 </script>

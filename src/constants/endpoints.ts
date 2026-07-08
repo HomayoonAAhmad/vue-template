@@ -10,4 +10,16 @@ export const endpoints = {
       GOLD_PRICE: "/gold/price",
     },
   },
+
+  USER: {
+    GET: {
+      USER_DATA: "/user/me",
+    },
+  },
+
+  TRANSACTIONS: {
+    POST: {
+      BUY_GOLD: "/transactions/buy",
+    },
+  },
 }

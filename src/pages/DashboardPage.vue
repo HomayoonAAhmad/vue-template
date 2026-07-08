@@ -76,9 +76,9 @@ const getChartData = () => {
     .finally(() => {})
 }
 
-onMounted(() => {
-  getChartData()
-})
+// onMounted(() => {
+//   getChartData()
+// })
 
 const componentMap = {
   BUY: BuyGoldSection,

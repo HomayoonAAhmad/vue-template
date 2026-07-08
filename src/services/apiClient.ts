@@ -12,3 +12,13 @@ apiClient.interceptors.request.use(async (config) => {
 
   return config
 })
+
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const message =
+      error.response?.data?.message || error.message || "خطایی رخ داد"
+
+    return Promise.reject(new Error(message))
+  },
+)
