@@ -24,6 +24,7 @@
     "vue3-hot-toast": "^0.0.5"
   },
   "devDependencies": {
+    "@tanstack/vue-query-devtools": "^6.1.36",
     "@types/moment-jalaali": "^0.7.9",
     "@types/node": "^24.12.3",
     "@vitejs/plugin-vue": "^6.0.6",
