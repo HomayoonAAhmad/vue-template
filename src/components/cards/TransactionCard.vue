@@ -24,25 +24,23 @@ const props = defineProps<{
         </div>
 
         <span class="text-xs md:text-sm font-normal">
-          {{ data.milligram.toLocaleString() }} گرم طلا
+          {{ data.gold_amount.toLocaleString() }} گرم طلا
         </span>
       </div>
 
       <span
         class="text-xs md:text-sm font-normal gap-0.5 md:gap-1 flex items-center"
       >
-        {{ data.amount.toLocaleString() }}
+        {{ data.total_amount.toLocaleString() }}
         <span class="text-[10px] md:text-xs">تومان</span>
       </span>
     </div>
-    <div class="w-full mt-1">
-      <Line />
-    </div>
+
     <div
       dir="ltr"
       class="text-sm md:text-base text-center font-medium text-primary"
     >
-      {{ moment(data.createdAt).format("jYYYY/jMM/jDD - HH:mm") }}
+      {{ moment(data.created_at).format("jYYYY/jMM/jDD - HH:mm") }}
     </div>
   </div>
 </template>
