@@ -77,7 +77,7 @@ watch(
     }
 
     syncing.from = "amount"
-    state.milligram = String(Math.floor(amount / price))
+    state.milligram = String(Math.round(amount / price))
     syncing.from = null
   },
 )
@@ -99,7 +99,7 @@ watch(
     }
 
     syncing.from = "milligram"
-    state.amount = String(Math.floor(milligram * price))
+    state.amount = String(Math.round(milligram * price))
     syncing.from = null
   },
 )
@@ -126,7 +126,11 @@ const buyGoldMutation = useMutation({
       window.location.href = response.data.gateway_url
     }
     if (variables.payment_type === "wallet") {
-      router.push(`/pay-check?id=${response.data.transaction.id}`)
+      user.setUserData({
+        wallet_amount: response.data.result.wallet.amount,
+        gold_amount: response.data.result.wallet.gold_amount,
+      })
+      router.push(`/pay-check?id=${response.data.result.transaction.id}`)
       toast.success(response.data.message)
     }
   },
@@ -143,7 +147,7 @@ const buyGoldMutation = useMutation({
       id="amount"
       v-model="state.amount"
       dir="ltr"
-      label="مبلغ پرداختی"
+      label="مبلغ پرداختی (تومان)"
       type="number"
       separate
       @focus="focusedInput = 'amount'"
