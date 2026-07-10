@@ -7,6 +7,7 @@ import ChargeWalletPage from "./pages/ChargeWalletPage.vue"
 import WithdrawPage from "./pages/WithdrawPage.vue"
 import NotFound from "./pages/NotFound.vue"
 import PortfolioPage from "./pages/PortfolioPage.vue"
+import PayCheckPage from "./pages/PayCheckPage.vue"
 
 const router = createRouter({
   history: createWebHistory(),
@@ -23,7 +24,7 @@ const router = createRouter({
         { path: "/me", component: PortfolioPage },
       ],
     },
-    // { path: "/me", component: PortfolioPage },
+    { path: "/pay-check", component: PayCheckPage },
     { path: "/:pathMatch(.*)*", component: NotFound },
   ],
 })
