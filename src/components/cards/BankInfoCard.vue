@@ -24,13 +24,17 @@ const props = defineProps<{
   >
     <div class="text-sm text-[#333333] font-bold flex items-center gap-2">
       <span>{{
-        data?.card_number ? data.card_number : "---- ---- ---- ----"
+        data?.card_number
+          ? data.card_number.replace(/(.{4})/g, "$1 ").trim()
+          : "---- ---- ---- ----"
       }}</span>
     </div>
 
     <div class="text-sm text-[#333333] font-bold flex items-center gap-2">
       <span>{{
-        data?.shaba ? data.shaba : "---- ---- ---- ---- ---- ----"
+        data?.shaba
+          ? data.shaba.replace(/(.{4})/g, "$1 ").trim()
+          : "---- ---- ---- ---- ---- ----"
       }}</span>
 
       <span>IR</span>

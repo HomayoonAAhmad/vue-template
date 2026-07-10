@@ -13,7 +13,7 @@ const statusMap = {
     textClassName: "text-secondary",
   },
   success: {
-    text: "در انتظار پرداخت",
+    text: "پرداخت شده",
     bgClassName: "bg-green-100",
     textClassName: "text-green-800",
   },
@@ -36,7 +36,7 @@ const status = statusMap[props.data.status] || "pending"
         class="flex items-center gap-1.5 rounded-full bg-[#f6f6f6] md:px-3 py-1 px-2.5"
       >
         <span class="text-xs md:text-sm font-normal">
-          {{ data.amount.toLocaleString() }} تومان
+          {{ data.total_amount.toLocaleString() }} تومان
         </span>
       </div>
 
@@ -57,10 +57,13 @@ const status = statusMap[props.data.status] || "pending"
       class="flex flex-col gap-2 relative text-center bg-secondary py-3 rounded-lg overflow-hidden"
     >
       <span class="text-sm md:text-base font-semibold">
-        IR {{ data.shabaNumber }}
+        {{ data.bank_card.card_number.replace(/(.{4})/g, "$1 ").trim() }}
+      </span>
+      <span class="text-sm md:text-base font-semibold">
+        IR {{ data.bank_card.shaba.replace(/(.{4})/g, "$1 ").trim() }}
       </span>
       <span class="text-xs md:text-sm font-medium">
-        بانک {{ data.bankName }}
+        بانک {{ data.bank_card.bank_name }}
       </span>
 
       <div
@@ -71,14 +74,11 @@ const status = statusMap[props.data.status] || "pending"
       />
     </div>
 
-    <div class="w-full mt-1">
-      <Line />
-    </div>
     <div
       dir="ltr"
       class="text-sm md:text-base text-center font-medium text-primary"
     >
-      {{ moment(data.createdAt).format("jYYYY/jMM/jDD - HH:mm") }}
+      {{ moment(data.created_at).format("jYYYY/jMM/jDD - HH:mm") }}
     </div>
   </div>
 </template>

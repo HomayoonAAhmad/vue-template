@@ -6,13 +6,12 @@ export type transactionTypes = {
   created_at: Date
 }
 
-export type withdrawTypes = {
-  id: number
-  amount: number
-  shabaNumber: string
-  bankName: string
-  status: "pending"
-  createdAt: string
+export type withdrawTypes = SingleTransaction & {
+  bank_card: {
+    card_number: string
+    shaba: string
+    bank_name: string
+  }
 }
 
 export type SingleTransaction = {

@@ -75,9 +75,9 @@ const { isLoading, data, refetch } = useQuery({
 const cardsOption = computed(
   () =>
     data.value?.map(
-      (item: { id: number; card_number: number; bank_name: string }) => ({
+      (item: { id: number; card_number: string; bank_name: string }) => ({
         key: item.id,
-        label: `${item.card_number} - ${item.bank_name}`,
+        label: `${item.card_number?.replace(/(.{4})/g, "$1 ").trim()} - ${item.bank_name}`,
       }),
     ) ?? [],
 )

@@ -56,7 +56,7 @@ const { data } = useQuery({
 const chartData = computed(
   () =>
     data.value?.chart?.map((item: { time: string; asset: number }) => ({
-      x: moment(item.time).format("jMM/jDD"),
+      x: moment(item.time).format("HH:mm"),
       y: item.asset,
     })) ?? [],
 )

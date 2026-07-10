@@ -6,7 +6,7 @@ import Tab from "../components/UI/Tab.vue"
 import TransactionCard from "../components/cards/TransactionCard.vue"
 // import { transactiondata } from "../constants/transactiondata"
 // import { withdrawdata } from "../constants/withdrawdata"
-// import WithdrawCard from "../components/cards/WithdrawCard.vue"
+import WithdrawCard from "../components/cards/WithdrawCard.vue"
 import { useQuery } from "@tanstack/vue-query"
 import { endpoints } from "../constants/endpoints.ts"
 import { apiClient } from "../services/apiClient.ts"
@@ -94,13 +94,13 @@ const { data } = useQuery({
         ></TransactionCard>
       </template>
 
-      <!-- <template v-if="state.activeTab === 'withdraw'">
+      <template v-if="state.activeTab === 'withdraw'">
         <WithdrawCard
           v-for="item in data.data"
           :key="item.id"
           :data="item"
         ></WithdrawCard>
-      </template> -->
+      </template>
     </div>
   </div>
 </template>
