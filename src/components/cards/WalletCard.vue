@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router"
 import Button from "../UI/Button.vue"
-
-const walletAmount = 10000000
+import { userStore } from "../../store/userStore.ts"
+import { WalletIcon } from "@heroicons/vue/24/outline"
 
 const router = useRouter()
+const user = userStore()
+
+const walletAmount = user.wallet_amount.toLocaleString()
 </script>
 
 <template>
@@ -20,7 +23,7 @@ const router = useRouter()
 
       <div class="flex items-center gap-1.5">
         <span class="text-sm md:text-md font-medium">
-          {{ walletAmount.toLocaleString() }}
+          {{ walletAmount }}
         </span>
         <span class="text-[10px] md:text-xs font-medium">ریال</span>
       </div>

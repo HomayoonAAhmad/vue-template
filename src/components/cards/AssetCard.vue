@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import { ChevronDownIcon } from "@heroicons/vue/24/outline"
+import { userStore } from "../../store/userStore"
+import { computed } from "vue"
 
 const props = defineProps<{
-  amount: number
   unit: string
   profit: number
 }>()
 
-const percent = props.profit?.toFixed(2) || 0
+const percent = computed(() => props.profit.toFixed(2))
+
+const user = userStore()
 </script>
 <template>
   <div
@@ -22,7 +25,7 @@ const percent = props.profit?.toFixed(2) || 0
         />
       </div>
       <span class="text-lg md:text-base font-semibold text-white">
-        {{ amount }}
+        {{ user.gold_amount }}
       </span>
       <span class="text-[10px] md:text-xs font-semibold text-white">
         میلی گرم

@@ -4,6 +4,10 @@ import Button from "../components/UI/Button.vue"
 import Input from "../components/UI/Input.vue"
 import BackButton from "../components/UI/BackButton.vue"
 import Modal from "../components/UI/Modal.vue"
+import { endpoints } from "../constants/endpoints.ts"
+import { apiClient } from "../services/apiClient.ts"
+import { useMutation } from "@tanstack/vue-query"
+import toast from "vue3-hot-toast"
 
 const options = [1000000, 2000000, 3000000]
 
@@ -16,6 +20,28 @@ const state = reactive<State>({
   value: "",
 
   openModal: false,
+})
+
+const chargeWallet = (amount: State["value"]) => {
+  const body = {
+    amount: amount,
+  }
+  const url = endpoints.USER.POST.CHARGE_WALLET
+  return apiClient.post(url, body)
+}
+
+const chargeWalletMutation = useMutation({
+  mutationFn: chargeWallet,
+  onSuccess: (response, variables) => {
+    toast.loading(
+      "در حال انتقال به درگاه هستید، نیاز به انجام کاری از سمت شما نیست",
+    )
+    window.location.href = response.data.gateway_url
+  },
+  onError: (error, variables) => {
+    console.log("خطا:", error)
+    toast.error(error.message)
+  },
 })
 </script>
 
@@ -53,9 +79,10 @@ const state = reactive<State>({
 
       <Button
         text="شارژ"
+        :loading="chargeWalletMutation.isPending.value"
         @click="
           () => {
-            state.openModal = true
+            chargeWalletMutation.mutate(state.value)
           }
         "
         :disabled="!state.value"
@@ -63,7 +90,7 @@ const state = reactive<State>({
     </div>
   </div>
 
-  <Modal v-model:open="state.openModal">
+  <!-- <Modal v-model:open="state.openModal">
     <div class="text-center flex flex-col gap-4">
       <h3 class="font-bold text-lg">ممنون از همراهی شما 🌱</h3>
 
@@ -84,5 +111,5 @@ const state = reactive<State>({
         امیدوارم در نسخه‌های بعدی تجربه بهتری برای شما فراهم کنم. ❤️
       </p>
     </div>
-  </Modal>
+  </Modal> -->
 </template>
