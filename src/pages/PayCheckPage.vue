@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { useRoute, useRouter } from "vue-router"
+import { useRoute } from "vue-router"
 import BackButton from "../components/UI/BackButton.vue"
 import { useQuery } from "@tanstack/vue-query"
 import { endpoints } from "../constants/endpoints.ts"
 import { apiClient } from "../services/apiClient.ts"
 import InvoiceCard from "../components/cards/InvoiceCard.vue"
 
-const router = useRouter()
+// const router = useRouter()
 
 const route = useRoute()
 const id = route.query.id

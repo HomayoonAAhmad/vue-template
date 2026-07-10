@@ -4,16 +4,16 @@ import { computed, ref } from "vue"
 
 interface Props {
   id: string
-  modelValue: string
+  modelValue: string | number | null
   label?: string
   disabled?: boolean
-  options: { key: string; label: string }[]
+  options: { key: string | number; label: string }[]
 }
 
 const props = defineProps<Props>()
 
 const emit = defineEmits<{
-  (e: "update:modelValue", value: string): void
+  (e: "update:modelValue", value: string | number): void
 }>()
 
 const isOpen = ref(false)
@@ -22,7 +22,7 @@ const selectedOption = computed(() =>
   props.options.find((item) => item.key === props.modelValue),
 )
 
-const selectOption = (value: string) => {
+const selectOption = (value: string | number) => {
   emit("update:modelValue", value)
   isOpen.value = false
 }
@@ -49,7 +49,7 @@ const selectOption = (value: string) => {
       {{ selectedOption?.label || "انتخاب کنید..." }}
 
       <ChevronDownIcon
-        class="aspect-square transition-all duration-300 size-4.5"
+        class="aspect-square transition-all duration-300 size-3.5 md:size-4.5"
         :class="{ 'rotate-180': isOpen }"
       />
     </button>

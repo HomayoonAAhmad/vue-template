@@ -7,29 +7,24 @@ const props = defineProps<{
 }>()
 
 const statusMap = {
-  PENDING: {
+  pending: {
     text: "در انتظار تایید",
     bgClassName: "bg-fourth/50",
     textClassName: "text-secondary",
   },
-  APPROVED: {
+  success: {
     text: "در انتظار پرداخت",
     bgClassName: "bg-green-100",
     textClassName: "text-green-800",
   },
-  REJECTED: {
+  failed: {
     text: "رد شده",
     bgClassName: "bg-red-100",
     textClassName: "text-red-800",
   },
-  PAID_TO_USER: {
-    text: "پرداخت شده",
-    bgClassName: "bg-fifth",
-    textClassName: "text-primary",
-  },
 }
 
-const status = statusMap[props.data.status] || "PENDING"
+const status = statusMap[props.data.status] || "pending"
 </script>
 
 <template>

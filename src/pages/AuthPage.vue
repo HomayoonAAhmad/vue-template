@@ -3,7 +3,7 @@ import { reactive } from "vue"
 import Input from "../components/UI/Input.vue"
 import Button from "../components/UI/Button.vue"
 import { userStore } from "../store/userStore.ts"
-import { useMutation, useQuery } from "@tanstack/vue-query"
+import { useMutation } from "@tanstack/vue-query"
 import { apiClient } from "../services/apiClient.ts"
 import { endpoints } from "../constants/endpoints.ts"
 import toast from "vue3-hot-toast"
@@ -37,13 +37,13 @@ const sendOtp = (phoneNumber: string) => {
 
 const requestOtpMutation = useMutation({
   mutationFn: sendOtp,
-  onSuccess: (response, variables) => {
+  onSuccess: (response) => {
     toast.success("کد ارسال شد")
     console.log("موفقیت آمیز:", response.data)
     state.verify = true
   },
 
-  onError: (error, variables) => {
+  onError: (error) => {
     console.log("خطا:", error)
     toast.error("مشکلی رخ داد")
   },
@@ -58,7 +58,7 @@ const verifyOtp = (data: { phone: string; code: string }) => {
 
 const verifyOtpMutation = useMutation({
   mutationFn: verifyOtp,
-  onSuccess: (response, variables) => {
+  onSuccess: (response) => {
     toast.success("با موفقیت انجام شد")
     console.log("موفقیت آمیز:", response.data)
     user.setUserData({
@@ -66,7 +66,7 @@ const verifyOtpMutation = useMutation({
     })
   },
 
-  onError: (error, variables) => {
+  onError: (error) => {
     console.log("خطا:", error)
     toast.error("مشکلی رخ داد")
   },

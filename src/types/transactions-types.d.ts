@@ -11,7 +11,7 @@ export type withdrawTypes = {
   amount: number
   shabaNumber: string
   bankName: string
-  status: "PENDING" | "APPROVED" | "REJECTED" | "PAID_TO_USER"
+  status: "pending"
   createdAt: string
 }
 

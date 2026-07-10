@@ -3,7 +3,7 @@ import { reactive } from "vue"
 import Button from "../components/UI/Button.vue"
 import Input from "../components/UI/Input.vue"
 import BackButton from "../components/UI/BackButton.vue"
-import Modal from "../components/UI/Modal.vue"
+// import Modal from "../components/UI/Modal.vue"
 import { endpoints } from "../constants/endpoints.ts"
 import { apiClient } from "../services/apiClient.ts"
 import { useMutation } from "@tanstack/vue-query"
@@ -32,13 +32,13 @@ const chargeWallet = (amount: State["value"]) => {
 
 const chargeWalletMutation = useMutation({
   mutationFn: chargeWallet,
-  onSuccess: (response, variables) => {
+  onSuccess: (response) => {
     toast.loading(
       "در حال انتقال به درگاه هستید، نیاز به انجام کاری از سمت شما نیست",
     )
     window.location.href = response.data.gateway_url
   },
-  onError: (error, variables) => {
+  onError: (error) => {
     console.log("خطا:", error)
     toast.error(error.message)
   },

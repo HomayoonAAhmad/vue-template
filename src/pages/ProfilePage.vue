@@ -44,7 +44,7 @@ const fetchUserAssets = async () => {
     })
 }
 
-const { isLoading, data } = useQuery({
+const { data } = useQuery({
   queryKey: ["fetch-user-assets"],
   queryFn: fetchUserAssets,
   staleTime: 1000 * 60,

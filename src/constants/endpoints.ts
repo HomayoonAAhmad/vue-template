@@ -25,10 +25,20 @@ export const endpoints = {
     POST: {
       BUY_GOLD: "/transactions/buy",
       SELL_GOLD: "/transactions/sell",
+      WITHDRAW: "/transactions/withdraw",
     },
     GET: {
       SINGLE_TRANSACTION: "/transactions/",
       TRANSACTIONS_LIST: "/transactions/",
+    },
+  },
+
+  CARD: {
+    GET: {
+      LIST: "/cards/list",
+    },
+    POST: {
+      CREATE: "/cards/create",
     },
   },
 }

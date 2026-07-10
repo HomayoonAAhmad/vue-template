@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import axios from "axios"
-import { onMounted, reactive } from "vue"
+import { reactive } from "vue"
 import Chart from "../components/UI/Chart.vue"
 import Tab from "../components/UI/Tab.vue"
 import BuyGoldSection from "../components/universal/BuyGoldSection.vue"
@@ -28,53 +27,53 @@ const state = reactive<State>({
   selectedValue: "BUY",
 })
 
-const actions = {
-  setData(data: Omit<State, "selectedValue">) {
-    state.chartData = data.chartData
-    state.max_price = data.max_price
-    state.min_price = data.min_price
-    state.change_percentage = data.change_percentage
-  },
-}
+// const actions = {
+//   setData(data: Omit<State, "selectedValue">) {
+//     state.chartData = data.chartData
+//     state.max_price = data.max_price
+//     state.min_price = data.min_price
+//     state.change_percentage = data.change_percentage
+//   },
+// }
 
-const getChartData = () => {
-  // const url = "/api/non-inventory/v1/prices/chart/daily/?asset_type=gold18"
-  // const url = "https://api.digikala.com/non-inventory/v1/prices/chart/daily/?asset_type=gold18"
-  const url =
-    "https://Api.BrsApi.ir/Market/Gold_Currency_Pro.php?key=BrgLrCK9YblUi3iJe7sYqeRJVu7Zgs7v&&history=1&symbol=IR_GOLD_18K"
-  axios
-    .get(url)
-    .then((response) => {
-      const res = response.data.history_24h
-      const now = res[0].time_unix
-      const twelveHoursAgo = now - 12 * 60 * 60
-      const last12Hours = res.filter(
-        (item: any) => item.time_unix >= twelveHoursAgo,
-      )
-      const filteredRes = last12Hours
-        .filter((_: any, index: number) => index % 30 === 0)
-        .reverse()
+// const getChartData = () => {
+//   // const url = "/api/non-inventory/v1/prices/chart/daily/?asset_type=gold18"
+//   // const url = "https://api.digikala.com/non-inventory/v1/prices/chart/daily/?asset_type=gold18"
+//   const url =
+//     "https://Api.BrsApi.ir/Market/Gold_Currency_Pro.php?key=BrgLrCK9YblUi3iJe7sYqeRJVu7Zgs7v&&history=1&symbol=IR_GOLD_18K"
+//   axios
+//     .get(url)
+//     .then((response) => {
+//       const res = response.data.history_24h
+//       const now = res[0].time_unix
+//       const twelveHoursAgo = now - 12 * 60 * 60
+//       const last12Hours = res.filter(
+//         (item: any) => item.time_unix >= twelveHoursAgo,
+//       )
+//       const filteredRes = last12Hours
+//         .filter((_: any, index: number) => index % 30 === 0)
+//         .reverse()
 
-      const prices = filteredRes.map((item: any) => item.price)
-      const maxPrice = Math.max(...prices)
-      const minPrice = Math.min(...prices)
-      const data: Omit<State, "selectedValue"> = {
-        chartData: filteredRes.map((item: { time: string; price: number }) => ({
-          x: item.time,
-          y: Math.floor(item.price / 1000),
-        })),
-        max_price: Math.floor(maxPrice / 1000),
-        min_price: Math.floor(minPrice / 1000),
-        change_percentage: "0",
-      }
+//       const prices = filteredRes.map((item: any) => item.price)
+//       const maxPrice = Math.max(...prices)
+//       const minPrice = Math.min(...prices)
+//       const data: Omit<State, "selectedValue"> = {
+//         chartData: filteredRes.map((item: { time: string; price: number }) => ({
+//           x: item.time,
+//           y: Math.floor(item.price / 1000),
+//         })),
+//         max_price: Math.floor(maxPrice / 1000),
+//         min_price: Math.floor(minPrice / 1000),
+//         change_percentage: "0",
+//       }
 
-      actions.setData(data)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
-    .finally(() => {})
-}
+//       actions.setData(data)
+//     })
+//     .catch((err) => {
+//       console.log(err)
+//     })
+//     .finally(() => {})
+// }
 
 // onMounted(() => {
 //   getChartData()

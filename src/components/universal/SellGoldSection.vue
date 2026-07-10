@@ -37,7 +37,7 @@ const sellGold = (amount: State["amount"]) => {
 
 const sellGoldMutation = useMutation({
   mutationFn: sellGold,
-  onSuccess: (response, variables) => {
+  onSuccess: (response) => {
     const wallet = response.data.result.wallet
     user.setUserData({
       gold_amount: wallet.gold_amount,
@@ -45,7 +45,7 @@ const sellGoldMutation = useMutation({
     })
     router.push(`/pay-check?id=${response.data.result.transaction.id}`)
   },
-  onError: (error, variables) => {
+  onError: (error) => {
     console.log("خطا:", error)
     toast.error(error.message)
   },

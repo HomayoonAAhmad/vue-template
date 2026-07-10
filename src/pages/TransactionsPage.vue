@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { reactive } from "vue"
 import Tab from "../components/UI/Tab.vue"
-import Button from "../components/UI/Button.vue"
-import { useRouter } from "vue-router"
+// import Button from "../components/UI/Button.vue"
+// import { useRouter } from "vue-router"
 import TransactionCard from "../components/cards/TransactionCard.vue"
 // import { transactiondata } from "../constants/transactiondata"
 // import { withdrawdata } from "../constants/withdrawdata"
-import WithdrawCard from "../components/cards/WithdrawCard.vue"
+// import WithdrawCard from "../components/cards/WithdrawCard.vue"
 import { useQuery } from "@tanstack/vue-query"
 import { endpoints } from "../constants/endpoints.ts"
 import { apiClient } from "../services/apiClient.ts"
@@ -25,7 +25,7 @@ const state = reactive<State>({
   activeTab: "buy",
 })
 
-const router = useRouter()
+// const router = useRouter()
 
 const fetchTransactions = async () => {
   console.count("fetchTransactions")
@@ -48,7 +48,7 @@ const fetchTransactions = async () => {
     })
 }
 
-const { isLoading, data } = useQuery({
+const { data } = useQuery({
   queryKey: ["get-transactions-list", () => state.activeTab],
   queryFn: fetchTransactions,
   staleTime: 1000 * 60,

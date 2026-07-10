@@ -134,7 +134,7 @@ const buyGoldMutation = useMutation({
       toast.success(response.data.message)
     }
   },
-  onError: (error, variables) => {
+  onError: (error) => {
     console.log("خطا:", error)
     toast.error(error.message)
   },
