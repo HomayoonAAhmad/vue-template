@@ -1,11 +1,8 @@
 <script setup lang="ts">
 import { useQuery } from "@tanstack/vue-query"
-import { ref } from "vue"
 import { endpoints } from "../../constants/endpoints"
 import { apiClient } from "../../services/apiClient"
 import { goldStore } from "../../store/goldStore"
-
-const amount = ref<number>(0)
 
 const gold = goldStore()
 
@@ -21,7 +18,6 @@ const getGoldPrice = async () => {
       // const data = response.data?.gold?.[0]?.price
       // const price = Math.floor(Number(data) / 1000)
       const price = response.data.price
-      amount.value = price || 0
       gold.setGoldPrice(price || 0)
       return price
     })
@@ -30,11 +26,11 @@ const getGoldPrice = async () => {
     })
 }
 
-const { isPending } = useQuery({
+const { isPending, data } = useQuery({
   queryKey: ["get-gold-price"],
   queryFn: getGoldPrice,
   staleTime: 1000 * 60,
-  refetchInterval: 1000 * 60,
+  refetchInterval: 1000 * 60 + 1,
   // refetchOnWindowFocus: false,
   // refetchOnMount: false,
   // refetchInterval: 60000,
@@ -64,7 +60,7 @@ const { isPending } = useQuery({
       <div class="text-xs md:text-[16px] font-bold text-primary">
         <span v-if="isPending">-</span>
         <span v-else>
-          {{ amount.toLocaleString() }}
+          {{ data.toLocaleString() }}
         </span>
       </div>
       <span class="text-xs md:text-[16px] font-medium text-primary">

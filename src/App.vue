@@ -2,7 +2,7 @@
 import UserDataProvider from "./providers/UserDataProvider.vue"
 import { version } from "../package.json"
 import { Toaster } from "vue3-hot-toast"
-import { VueQueryDevtools } from "@tanstack/vue-query-devtools"
+// import { VueQueryDevtools } from "@tanstack/vue-query-devtools"
 
 console.log(version)
 </script>
@@ -11,6 +11,6 @@ console.log(version)
   <user-data-provider>
     <router-view></router-view>
     <Toaster position="top-left" :reverse-order="false" />
-    <VueQueryDevtools />
+    <!-- <VueQueryDevtools /> -->
   </user-data-provider>
 </template>

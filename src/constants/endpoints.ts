@@ -8,6 +8,7 @@ export const endpoints = {
   GOLD: {
     GET: {
       GOLD_PRICE: "/gold/price",
+      GOLD_CHART: "/gold/chart",
     },
   },
 

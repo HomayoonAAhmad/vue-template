@@ -48,9 +48,9 @@ const { data } = useQuery({
   queryKey: ["fetch-user-assets"],
   queryFn: fetchUserAssets,
   staleTime: 1000 * 60,
-  refetchOnMount: false,
-  refetchOnWindowFocus: false,
-  refetchOnReconnect: false,
+  // refetchOnMount: false,
+  // refetchOnWindowFocus: false,
+  // refetchOnReconnect: false,
 })
 
 const chartData = computed(

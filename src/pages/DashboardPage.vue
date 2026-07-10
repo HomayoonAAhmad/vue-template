@@ -4,6 +4,12 @@ import Chart from "../components/UI/Chart.vue"
 import Tab from "../components/UI/Tab.vue"
 import BuyGoldSection from "../components/universal/BuyGoldSection.vue"
 import SellGoldSection from "../components/universal/SellGoldSection.vue"
+import { useQuery } from "@tanstack/vue-query"
+import { apiClient } from "../services/apiClient.ts"
+import { endpoints } from "../constants/endpoints.ts"
+import toast from "vue3-hot-toast"
+import moment from "moment-jalaali"
+import { ChevronDownIcon } from "@heroicons/vue/24/outline"
 
 const options = [
   { id: "BUY", name: "خرید" },
@@ -16,6 +22,7 @@ interface State {
   min_price: number
   change_percentage: string
   selectedValue: "SELL" | "BUY"
+  trend_direction: null | "DOWN" | "UP"
 }
 
 const state = reactive<State>({
@@ -23,6 +30,7 @@ const state = reactive<State>({
   max_price: 0,
   min_price: 0,
   change_percentage: "",
+  trend_direction: null,
 
   selectedValue: "BUY",
 })
@@ -33,6 +41,7 @@ const state = reactive<State>({
 //     state.max_price = data.max_price
 //     state.min_price = data.min_price
 //     state.change_percentage = data.change_percentage
+//     state.trend_direction = data.trend_direction
 //   },
 // }
 
@@ -83,6 +92,44 @@ const componentMap = {
   BUY: BuyGoldSection,
   SELL: SellGoldSection,
 }
+
+const fetchGoldChart = async () => {
+  const url = endpoints.GOLD.GET.GOLD_CHART
+  return apiClient
+    .get(url)
+    .then((response) => {
+      const data: Omit<State, "selectedValue"> = {
+        chartData: response.data?.buckets?.map(
+          (item: { date_time: string; price: number }) => ({
+            x: moment(item.date_time).format("HH:mm"),
+            y: Math.round(item.price / 10),
+          }),
+        ),
+        max_price: Math.round(response.data?.max_price / 10),
+        min_price: Math.round(response.data?.min_price / 10),
+        change_percentage: response.data?.change_percentage,
+        trend_direction: response.data?.trend_direction,
+      }
+
+      // actions.setData(data)
+
+      return data
+    })
+    .catch((error) => {
+      console.log(error)
+      toast.error(error.message)
+      return error
+    })
+}
+
+const { data } = useQuery({
+  queryKey: ["fetch-gold-chart"],
+  queryFn: fetchGoldChart,
+  staleTime: 1000 * 60,
+  // refetchOnMount: false,
+  // refetchOnWindowFocus: false,
+  // refetchOnReconnect: false,
+})
 </script>
 
 <template>
@@ -91,28 +138,44 @@ const componentMap = {
   >
     <div class="flex flex-col w-full items-center gap-4">
       <span class="w-full text-xs md:text-sm font-medium">
-        نمودار قیمت طلا
+        نمودار تغییرات قیمت طلا در ۲۴ ساعت گذشته
       </span>
 
       <div
         class="flex flex-col gap-4 px-7.5 py-5.75 border w-full border-fifth shadow-sm rounded-xl"
       >
-        <Chart :data="state.chartData" />
+        <Chart :data="data?.chartData || []" />
 
         <div
           class="flex items-center justify-between gap-4 bg-[#F7F8FA] px-8 py-3 rounded-md"
         >
           <div class="flex flex-col gap-2 items-center">
-            <span class="text-[10px]">بالاترین قیمت</span>
-            <span class="text-xs"
-              >{{ state.max_price.toLocaleString() }} ریال</span
+            <span class="text-[10px]">تغییرات</span>
+            <span
+              :class="
+                state.trend_direction === 'UP'
+                  ? 'text-green-500'
+                  : 'text-red-500'
+              "
+              dir="ltr"
+              class="text-xs flex items-center gap-0.5"
             >
+              <ChevronDownIcon class="aspect-square size-3" />
+              {{ data?.change_percentage?.toLocaleString() || "-" }}%
+            </span>
           </div>
 
           <div class="flex flex-col gap-2 items-center">
             <span class="text-[10px]">پایین ترین قیمت</span>
             <span class="text-xs"
-              >{{ state.min_price.toLocaleString() }} ریال</span
+              >{{ data?.min_price?.toLocaleString() || "-" }} ریال</span
+            >
+          </div>
+
+          <div class="flex flex-col gap-2 items-center">
+            <span class="text-[10px]">بالاترین قیمت</span>
+            <span class="text-xs"
+              >{{ data?.max_price?.toLocaleString() || "-" }} ریال</span
             >
           </div>
         </div>
