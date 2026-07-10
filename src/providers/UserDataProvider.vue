@@ -13,7 +13,6 @@ const getUserData = async () => {
   return apiClient
     .get(url)
     .then((response) => {
-      // console.log(response.data)
       store.setUserData({
         id: response.data.user.id,
         name: response.data.user.name,
@@ -21,10 +20,14 @@ const getUserData = async () => {
         wallet_amount: response.data.user.wallet.amount,
         gold_amount: response.data.user.wallet.gold_amount,
       })
+      return response.data
     })
     .catch((error) => {
       console.log(error)
       localStorage.clear()
+      store.setUserData({
+        token: undefined,
+      })
     })
 }
 
@@ -32,6 +35,9 @@ const { isLoading, refetch } = useQuery({
   queryKey: ["get-user-data"],
   queryFn: getUserData,
   enabled: store.hasData,
+  refetchOnMount: false,
+  refetchOnWindowFocus: false,
+  refetchOnReconnect: false,
 })
 
 watch(
@@ -50,8 +56,8 @@ watch(
   </template>
 
   <template v-if="isLoading">
-    <span>loading</span>
+    <span></span>
   </template>
 
-  <AuthPage v-else />
+  <AuthPage v-if="!store.hasData && !isLoading" />
 </template>
