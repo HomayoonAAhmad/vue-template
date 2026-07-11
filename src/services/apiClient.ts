@@ -1,7 +1,8 @@
 import axios from "axios"
 
 export const apiClient = axios.create({
-  baseURL: "http://localhost:3000/api/v1",
+  // baseURL: "http://localhost:3000/api/v1",
+  baseURL: "https://goldappapi.runflare.run/api/v1",
   // baseURL: "http://10.72.161.60:3000/api/v1",
 })
 

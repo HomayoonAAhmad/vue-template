@@ -151,7 +151,10 @@ const verifyOtpMutation = useMutation({
 
         <Button
           text="ارسال کد"
-          :loading="requestOtpMutation.isPending.value"
+          :loading="
+            requestOtpMutation.isPending.value ||
+            verifyOtpMutation.isPending.value
+          "
           :disabled="state.verify ? !state.code : !state.phone"
           @click="
             () => {
